@@ -10,7 +10,13 @@ const LoginPage = ({ history }) => (
 
   <Page>
     <CenteringContainer>
-      <LoginBox onClick={ () => navigation.toSignUpPage(history) } />
+
+      <LoginBox
+        onSuccessLogin={ () => console.log('Redirect to Dashboard Page') }
+        onSignUpClick={ () => navigation.toSignUpPage(history) }
+        style={{ minWidth: '20%' }}
+      />
+
     </CenteringContainer>
   </Page>
 

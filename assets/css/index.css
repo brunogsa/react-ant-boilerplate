@@ -8,6 +8,15 @@
   background-position: center center;
 }
 
+.is-box {
+  background-color: white;
+
+  padding: 32px 32px 32px 32px;
+  border: 4px solid orange;
+  border-radius: 4px;
+  margin: 16px 16px 16px 16px;
+}
+
 .has-centered-content {
   display: flex;
   flex-direction: column;
@@ -19,11 +28,10 @@
   width: 100%;
 }
 
-.is-box {
-  background-color: white;
+.has-small-margin {
+  margin: 4px 4px 4px 4px;
+}
 
-  padding: 32px 32px 32px 32px;
-  border: 4px solid orange;
-  border-radius: 4px;
-  margin: 16px 16px 16px 16px;
+.has-bigger-margin-on-top {
+  margin-top: 16px;
 }

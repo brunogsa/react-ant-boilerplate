@@ -10,7 +10,12 @@ const SignUpPage = ({ history }) => (
 
   <Page>
     <CenteringContainer>
-      <SignUpBox onClick={ () => navigation.toLoginPage(history) } />
+
+      <SignUpBox
+        onClick={ () => navigation.toLoginPage(history) }
+        style={{ minWidth: '20%' }}
+      />
+
     </CenteringContainer>
   </Page>
 

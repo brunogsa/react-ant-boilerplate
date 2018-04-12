@@ -7,6 +7,7 @@
   ],
 
   "plugins": [
+    "emotion",
     "react-hot-loader/babel"
   ]
 }

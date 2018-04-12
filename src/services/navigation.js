@@ -12,8 +12,13 @@ function toSignUpPage(history) {
   to(history, routes.signUp);
 }
 
+function toDashboardPage(history) {
+  to(history, routes.dashboard);
+}
+
 export default {
   to,
   toLoginPage,
   toSignUpPage,
+  toDashboardPage,
 };
