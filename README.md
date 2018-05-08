@@ -17,7 +17,6 @@ NodeJS 8+ is required to run this service.
 - `npm run lint:fix` - Try to automatically fix Lint errors
 - `npm test` - Checks if your code is ok before creating a commit
 - `npm run test:unit` - Run your unit tests
-- `npm run report:coverage` - Detailed code coverage of the last tests you ran
 - `npm run storybooks` - Allow you to see the Components working on an isolated environment
 
 ## Directory structure

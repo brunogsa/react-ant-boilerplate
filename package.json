@@ -23,7 +23,6 @@
     "lint:fix": "eslint . --ext .js --fix",
     "test": "npm run lint && npm run test:unit",
     "test:unit": "jest --coverage",
-    "report:coverage": "opn coverage/lcov-report/index.html",
     "storybooks": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
@@ -71,17 +70,16 @@
     "file-loader": "1.1.5",
     "fs": "0.0.1-security",
     "html-webpack-plugin": "2.30.1",
-    "jest": "21.2.1",
+    "jest": "^22.4.3",
     "open-browser-webpack-plugin": "0.0.5",
-    "opn-cli": "^3.1.0",
     "react-addons-test-utils": "15.6.2",
     "react-test-renderer": "16.2.0",
     "rimraf": "2.6.2",
     "storybook-router": "^0.3.3",
     "style-loader": "^0.20.3",
     "url-loader": "0.6.2",
-    "webpack": "3.9.1",
-    "webpack-dev-server": "2.9.5"
+    "webpack": "^3",
+    "webpack-dev-server": "^3.1.4"
   },
   "jest": {
     "setupFiles": [
