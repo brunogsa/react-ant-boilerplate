@@ -1,11 +1,21 @@
 const { resolve } = require('path');
-const webpack = require('webpack');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+const rootFolder = resolve(`${ __dirname }/..`);
+const srcFolder = `${ rootFolder }/src`;
+const distFolder = `${ rootFolder }/dist`;
 
 const config = {
-  context: resolve(`${ __dirname }/..`, 'src'),
-  devtool: 'cheap-module-source-map',
+  mode: 'production',
+
+  context: srcFolder,
+
+  devtool: 'source-map',
+  target: 'web',
 
   entry: [
     './index.js',
@@ -13,112 +23,102 @@ const config = {
   ],
 
   output: {
-    filename: 'bundle.js',
-    path: resolve(`${ __dirname }/..`, 'dist'),
+    path: distFolder,
     publicPath: '',
+    filename: 'bundle.js',
   },
 
   module: {
-    loaders: [
+    rules: [
+
       {
-        test: /\.js?$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
+
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            'css-loader',
-          ],
-          publicPath: '../',
-        }),
+        use: [
+          MiniCssExtractPlugin.loader,
+
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: false,
+              minimize: true,
+            },
+          },
+        ],
       },
+
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
         use: [
           {
             loader: 'url-loader',
             options: {
               limit: 8192,
-              mimetype: 'image/png',
               name: 'images/[name].[ext]',
             },
           },
         ],
       },
-      {
-        test: /\.eot(\?v=\d+.\d+.\d+)?$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: 'fonts/[name].[ext]',
-            },
-          },
-        ],
-      },
-      {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-              mimetype: 'application/font-woff',
-              name: 'fonts/[name].[ext]',
-            },
-          },
-        ],
-      },
-      {
-        test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-              mimetype: 'application/octet-stream',
-              name: 'fonts/[name].[ext]',
-            },
-          },
-        ],
-      },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-              mimetype: 'image/svg+xml',
-              name: 'images/[name].[ext]',
-            },
-          },
-        ],
-      },
+
     ],
   },
 
   plugins: [
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackPlugin({
-      template: `${ __dirname }/../src/index.html`,
+      template: `${ srcFolder }/index.html`,
       filename: 'index.html',
       inject: 'body',
+
+      minify: {
+        collapseWhitespace: true,
+        collapseInlineTagWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+      },
     }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false,
+
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css',
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-    }),
-    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
-    new ExtractTextPlugin({ filename: './styles/style.css', disable: false, allChunks: true }),
   ],
+
+  optimization: {
+    minimize: true,
+
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: false,
+
+        uglifyOptions: {
+          compress: {
+            warnings: false,
+            conditionals: true,
+            unused: true,
+            comparisons: true,
+            sequences: true,
+            dead_code: true,
+            evaluate: true,
+            if_return: true,
+            join_vars: true,
+          },
+
+          output: {
+            comments: false,
+          },
+        },
+      }),
+
+      new OptimizeCSSAssetsPlugin({}),
+    ],
+  },
 };
 
 module.exports = config;
